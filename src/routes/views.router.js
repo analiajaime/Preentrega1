@@ -89,6 +89,14 @@ router.get ("/chat", (req, res) =>{
 }
 )
 
+router.get ("/image", (req, res) =>{
+    try {
+        res.render("image");
+    } catch (error) {
+        console.error("Error al leer el archivo: ", error);
+    }
+}
+)
 
 
 module.exports = router;

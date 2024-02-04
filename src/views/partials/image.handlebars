@@ -1,0 +1,10 @@
+<div>
+    {{#each image}}
+    <div class="card-imagenes">
+        <img src={{this.path}} alt="">
+        <h3> {{this.title}} </h3>
+        <p> {{this.description}} </p>
+        <a href="public/image/{{this.id}}/delete" class="btn"> Eliminar </a>
+    </div>
+{{/each}}
+</div>
