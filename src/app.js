@@ -4,6 +4,7 @@ const app = express();
 const PORT = 8080;
 const expressHbs = require("express-handlebars");
 const socket = require("socket.io"); 
+const mongoose = require("mongoose");
 
 //Require de ProductManager
 const ProductManager = require("./controllers/productManager")
@@ -13,6 +14,7 @@ const productManager = new ProductManager("./src/models/products.json")
 const productsRouter = require("./routes/products.router");
 const cartRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
+const clientesRouter = require("./routes/clientes.router");
 
 //Middlewares
 app.use(express.json());
@@ -23,6 +25,7 @@ app.use(express.static("./src/public"));
 app.use("/api", productsRouter);
 app.use("/api", cartRouter);
 app.use("/", viewsRouter)
+app.use("/clientes", clientesRouter)
 
 //Handlebars
 app.engine("handlebars", expressHbs.engine());
@@ -49,4 +52,19 @@ io.on("connection", async (socket) => {
     });
 })
 
+//Conexion a la base de datos
+
+mongoose.connect("mongodb+srv://analiajaime:AmadeuS01@cluster0.tinq6s3.mongodb.net/e-commerce?retryWrites=true&w=majority",)
+    .then(() => {
+        console.log("Conectado a la base de datos AnaliaJaime");
+    })
+    .catch((error) => {
+        console.error("Error al conectar a la base de datos. Linea62", error);
+    })
+
+//Server
+
+httpServer.on("error", (error) => {
+    console.error("Error del servidor", error);
+}   )
 
