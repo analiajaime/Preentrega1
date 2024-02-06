@@ -98,5 +98,34 @@ router.get ("/image", (req, res) =>{
 }
 )
 
+router.get ("/upload", (req, res) =>{
+    try {
+        res.render("upload");
+    } catch (error) {
+        console.error("Error al leer el archivo: ", error);
+    }
+}
+)
+
+router.get ("/login", (req, res) =>{
+    try {
+        res.render("login");
+    } catch (error) {
+        console.error("Error al leer el archivo: ", error);
+    }
+}
+)   
+
+router.get ("/register", (req, res) =>{
+    try {
+        res.render("register");
+    } catch (error) {
+        console.error("Error al leer el archivo: ", error);
+    }
+}
+)
+
+
+
 
 module.exports = router;

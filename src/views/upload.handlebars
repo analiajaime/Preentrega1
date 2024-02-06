@@ -1,18 +1,21 @@
 <div class="upload">
     <form action="/upload" method="POST" enctype="multipart/form-data">
         <div class="uploadContainer">
-            <input type="file" name="imageFile">
+            <input type="file" name="file"> 
         </div>
 
         <div class="uploadContainer">
-            <input type="text" name="title" placeholder="Titulo de la imagen">
+            <input type="text" name="title" placeholder="Título de la imagen">
         </div>
 
         <div class="uploadContainer">
             <input type="text" name="description" placeholder="Descripción">
         </div>
+
         <div class="uploadContainer">
-            <button class="btn"> Publicar </button>
+            <button class="btn">Subir</button>
         </div>
     </form>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+<script src="js/index.js"></script>

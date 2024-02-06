@@ -19,7 +19,7 @@
     "status": true,
     "stock": 20,
     "category": "Gatos",
-    "thumbnails": "./img/card3.jpeg"
+    "thumbnails": "./img/card10.jpeg"
   },
   {
     "id": 4,
@@ -30,6 +30,6 @@
     "status": true,
     "stock": 25,
     "category": "Gatos",
-    "thumbnails": "./img/card5.jpeg"
+    "thumbnails": "./img/card16.jpeg"
   }
 ]

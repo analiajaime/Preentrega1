@@ -11,4 +11,3 @@ const imageSchema = new mongoose.Schema({
 const imageModel = mongoose.model('image', imageSchema);
 
 module.exports = imageModel;
-// Path: src/routes/image.router.js
