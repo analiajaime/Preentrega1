@@ -1,2 +1,12 @@
+
+{{#each products}}
+  <div class="product">
+    <h2>{{name}}</h2>
+    <p>{{description}}</p>
+    <p>{{price}}</p>
+    <button class="add-to-cart" data-id="{{id}}">Add to cart</button>
+  </div>
+{{/each}}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
 <script src="js/index.js"></script>

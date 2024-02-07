@@ -84,6 +84,7 @@ const openChatInput = () => {
     });
 };
 
+//CHAT
 document.getElementById("btnEnviar").addEventListener("click", () => {
     addProduct();
 });
@@ -97,7 +98,7 @@ socket.on("products", (data) => {
 });
 
 
-
+//CHAT
 socket.on("messagesLogs", (data) => {
     const log = document.getElementById("messagesLogs");
     let messages = "";
@@ -111,4 +112,24 @@ socket.on("messagesLogs", (data) => {
 
 document.getElementById("btnOpenChat").addEventListener("click", () => {
     openChatInput();
+});
+
+
+//SUBIDA DE LA IMAGEN
+document.getElementById("uploadContainer").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const formData = new FormData();
+    const imageFile = document.getElementById("image").files[0];
+    formData.append("image", imageFile);
+
+    fetch("/upload", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+       
+    })
+    .catch(error => console.error("Error al subir la imagen:", error));
 });

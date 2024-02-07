@@ -1,0 +1,35 @@
+[
+  {
+    "id": 2,
+    "title": "Perrito02",
+    "description": "Otro hermoso perrito",
+    "code": "123b",
+    "price": 18000,
+    "status": true,
+    "stock": 10,
+    "category": "Perros",
+    "thumbnails": "./img/card2.jpeg"
+  },
+  {
+    "id": 3,
+    "title": "Gatito01",
+    "description": "Gatito hermoso",
+    "code": "123c",
+    "price": 17000,
+    "status": true,
+    "stock": 20,
+    "category": "Gatos",
+    "thumbnails": "./img/card10.jpeg"
+  },
+  {
+    "id": 4,
+    "title": "Gatito02",
+    "description": "Otro gatito hermoso",
+    "code": "123d",
+    "price": 4500,
+    "status": true,
+    "stock": 25,
+    "category": "Gatos",
+    "thumbnails": "./img/card16.jpeg"
+  }
+]

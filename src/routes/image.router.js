@@ -1,74 +1,104 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs").promises;
-const multer = require('multer'); 
-const upload = multer({ dest: 'uploads/' });
-
-const imageModel = require("../models/image.model.js");
-
-// GET para subir una imagen
-router.get("/upload", (req, res) => {
-    res.render("upload");
-});
+const path = require('path');
+const ImageModel = require("../models/image.model.js"); 
+const multer = require("multer");
+const upload = multer({ dest: "src/public/image"});
 
 
-router.post("/upload", upload.single('file'), async (req, res) => {
-    try {
-        const { title, description } = req.body;
-        const { filename, path, originalname } = req.file; 
-        const newImage = new imageModel({ title, description, filename, path, originalname });
-        await newImage.save();
-        res.redirect("/image");
-    } catch (error) {
-        console.error("Error al subir la imagen", error);
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
-});
+//routes
 
-// GET para obtener todas las imágenes
 router.get("/image", async (req, res) => {
-    try {
-        const images = await imageModel.find();
-        
-        const nuevoArrayImagenes = images.map((image) => ({
-            id: image._id,
-            name: image.title,
-            description: image.description,
-            filename: image.filename,
-            path: image.path,
-        }));
-        
-        res.render("partials/image", { images: nuevoArrayImagenes });
-    } catch (error) {
-        console.error("Error al obtener todas las imagenes", error);
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
-});
+  const image = await ImageModel.find();
 
-// GET para obtener una imagen específica por ID
-router.get("/image/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const image = await imageModel.findById(id);
-        res.render("image", { image });
-    } catch (error) {
-        console.error("Error al obtener la imagen", error);
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
-});
+  const nuevoArray = image.map((image) => {
+    return {
+      id: image._id,
+      title: image.title,
+      description: image.description,
+      filename: image.filename,
+      path: image.path,
+    };
+  });
 
-// GET para eliminar una imagen específica por ID
+  res.render("image", { image: nuevoArray });
+}
+)
+
+  
+  router.post("/upload", upload.single('image'), async (req, res) => {
+    if (!req.file) {
+      return res.status(400).send("No se ha cargado ningún archivo.");
+    }
+    
+    const image = new ImageModel();
+    image.title = req.body.title;
+    image.description = req.body.description;
+    image.filename = req.file.filename;
+    image.path = "/image/" + req.file.filename;
+
+    await image.save();
+    res.redirect("/image");
+  }
+  );
+
 router.get("/image/:id/delete", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const image = await imageModel.findById(id);
-        await fs.unlink(image.path);
-        await imageModel.findByIdAndDelete(id);
-        res.redirect("/image");
-    } catch (error) {
-        console.error("Error al eliminar la imagen", error);
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
-});
+  const { id } = req.params;
+  const image = await ImageModel.findByIdAndDelete(id);
+  await fs.unlink(path.join(__dirname, "../image", image.filename));
+  res.redirect("/image");
+}
+)
 
 module.exports = router;
+
+
+
+// // Configuración de Multer para almacenar archivos subidos
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, '../image')); 
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
+
+// const upload = multer({ storage: storage });
+
+// // GET para subir una imagen (formulario)
+// router.get("/upload", (req, res) => {
+//   res.render("upload"); 
+// });
+
+// // POST para procesar la carga de la imagen
+// router.post("/upload", upload.single('file'), async (req, res) => {
+//   try {
+//     const { title, description } = req.body;
+//     const { filename, path: imagePath, originalname } = req.file; 
+//     const newImage = new ImageModel({ title, description, filename, path: imagePath, originalname });
+//     await newImage.save();
+//     res.redirect("/image");
+//   } catch (error) {
+//     console.error("Error al subir la imagen", error);
+//     res.status(500).json({ error: "Error interno del servidor" });
+//   }
+// });
+
+// // GET para obtener todas las imágenes
+// router.get("/image", async (req, res) => {
+//   try {
+//     const image = await ImageModel.find();
+//     res.render("image", { image }); 
+//   } catch (error) {
+//     console.error("Error al obtener todas las imágenes", error);
+//     res.status(500).json({ error: "Error interno del servidor" });
+//   }
+// });
+
+// // GET para obtener una imagen por su ID
+
+
+
+// module.exports = router;

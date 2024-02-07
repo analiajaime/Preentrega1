@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const clientsModel = require("./models/clients.model");
+const multer = require("multer");
+const upload = multer({ dest: "src/public/image" });
+const fs = require("fs").promises;
+const path = require('path');
+const ImageModel = require("./models/image.model.js");
 
 
 // Conexión a la base de datos MongoDB

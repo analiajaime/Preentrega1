@@ -1,7 +1,18 @@
 const express = require("express");
 const app = express();
+
+
+
+
 //import expressHbs from "express-handlebars";
 const expressHbs = require("express-handlebars");
+const hbs = expressHbs.create({
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
+});
+
 //import socketIO from "socket.io";
 const socketIO = require("socket.io");
 //puerto  
@@ -21,6 +32,7 @@ const cartRouter = require("./routes/carts.router");
 const viewsRouter = require("./routes/views.router");
 const clientsRouter = require("./routes/clients.router");
 const imageRouter = require("./routes/image.router");
+require("../src/database.js");
 
 // Middlewares
 app.use(express.json());
@@ -37,23 +49,26 @@ app.use("/api", productsRouter);
 app.use("/api", cartRouter);
 app.use("/", viewsRouter);
 app.use("/clients", clientsRouter);
+app.use("/image", imageRouter);
 
 // Multer Configuration
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./src/public/images");
+  destination: (req, file, cb) => {
+      cb(null, "./src/public/image");
   },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+  filename: (req, file, cb) => {
+      cb(null, file.originalname);
+  }
+})
 
-const upload = multer({ storage: storage });
-app.post("/upload", upload.single("imageFile"), (req, res) => {
-  res.send("Archivo cargado");
-});
+const upload = multer({storage});
 
-app.use("/image", imageRouter);
+app.post("/upload", upload.single("image"), (req, res) => {
+  res.redirect("/image");
+}
+);
+
+
 
 // HTTP Server
 const httpServer = app.listen(PORT, () => {
@@ -81,9 +96,10 @@ mongoose.connect("mongodb+srv://analiajaime:AmadeuS01@cluster0.tinq6s3.mongodb.n
  
 })
   .then(() => {
-    console.log("Conectado a la base de datos AnaliaJaime");
+    console.log("Conectado a la base de datos AnaliaJaime-app.js linea 105");
   })
   .catch((error) => {
     console.error("Error al conectar a la base de datos. Linea 62", error);
   });
 
+  module.exports.upload = upload;
